@@ -1,0 +1,11 @@
+2024-06-30 17:31:58,155 - DEBUG - x+y=3, expected=True, result=True
+2024-06-30 17:33:33,958 - DEBUG - x+y=3, expected=True, result=True
+2024-06-30 17:38:35,761 - DEBUG - x+y=3, expected=True, result=True
+2024-06-30 17:40:49,753 - DEBUG - x+y=3, expected=True, result=True
+2024-06-30 17:40:49,762 - DEBUG - x+y=4, expected=True, result=False
+2024-06-30 17:40:50,026 - DEBUG - x+y=5, expected=True, result=False
+2024-06-30 17:40:50,048 - DEBUG - x+y=1, expected=True, result=True
+2024-06-30 18:02:28,201 - DEBUG - x+y=3, expected=True, result=True,judge=True
+2024-06-30 18:02:28,209 - DEBUG - x+y=4, expected=True, result=False,judge=False
+2024-06-30 18:02:28,464 - DEBUG - x+y=5, expected=True, result=False,judge=False
+2024-06-30 18:02:28,490 - DEBUG - x+y=1, expected=True, result=True,judge=True

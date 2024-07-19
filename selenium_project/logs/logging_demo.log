@@ -1,0 +1,8 @@
+2024-06-29 18:41:43,170 - DEBUG - This is a debug message
+2024-06-29 18:41:43,171 - INFO - This is an info message
+2024-06-29 18:41:43,172 - WARNING - This is a warning message
+2024-06-29 18:41:43,172 - ERROR - This is an error message
+2024-06-29 18:47:05,715 - DEBUG - This is a debug message-logging_demo-<module>-6
+2024-06-29 18:47:05,716 - INFO - This is an info message-logging_demo-<module>-7
+2024-06-29 18:47:05,716 - WARNING - This is a warning message-logging_demo-<module>-8
+2024-06-29 18:47:05,716 - ERROR - This is an error message-logging_demo-<module>-9

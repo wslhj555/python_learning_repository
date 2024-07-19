@@ -1,0 +1,1560 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+    var resCode = '0'
+    var url = ''
+    if (resCode == 1500 && url) {
+        var back = encodeURIComponent(location.href)
+        url = url + '&backUrl=' + back
+        location.href = url
+    }
+</script>
+
+
+
+    
+<script>
+   var g_data = g_data || {};
+   g_data.site = 'hongxiu'
+
+   // 环境变量，会按照环境选择性打log
+   g_data.envType = 'pro';
+
+   //环境域名
+   g_data.rootDomain = 'hongxiu.com';
+   g_data.domain = '';
+   g_data.domainPreFix = '';
+
+   //静态资源域名
+   g_data.staticPath = '//yuxseocdn.yuewen.com/pro/hongxiu_pc/_prelease';
+
+   //获取用户是否登录
+   g_data.isLogin = 'false';
+
+   // 导流相关
+   g_data.appDownloadUrl = 'https://www.yuewen.com/app.html#appxx';
+   g_data.guide2app = 'xx';
+   g_data.guide2appXXLocationSite = '_hxpc';
+   g_data.isQReaderNoFreeBook = false;
+
+   // 是否支持登录
+   g_data.enableLogin = true;
+
+   // 是否支持充值 / 消费 / 打赏 / 投票等
+   g_data.enableChargeAndConsume = true;
+</script>
+
+    <script>
+
+      //全局的通用数据都放g_data变量里
+      //用作统计PV
+      g_data.pageId = 'hx_P_read';
+
+      //上报用cbid
+      g_data.cbid = '27263292302202504';
+
+      //阅读页配置参数
+      g_data.readSetting = {
+        "t" : 0,
+        "ft" : 0,
+        "fs" : 3,
+        "w" : 2,
+        "rt" : 0,
+        "autoBuy" : 0
+      };
+      //书信息
+      g_data.bookInfo = {
+        "bookId":'27263292302202504',
+        "bookName":'飒翻天！大佬她又在疯狂打脸',
+        "authorId": '5396149304016701',
+        "author": '夏日粉末',
+        "chanId": '30020',
+      };
+
+      //页面初始化章节信息
+      g_data.chapter = {
+        //页面进入加载的章节id
+        id:'73745320881739928',
+        //章节vip标识
+        vipStatus : 0,
+        //上一章id
+        prevId : '0',
+        //下一章id
+        nextId :'73772670159747147',
+        //本章节是否已经订阅
+        isBuy: 1
+      };
+
+      //页面进入时,下一章是否是vip章节
+      g_data.nextChapterVip = 0;
+      // guid
+      g_data.guid = '';
+      // 打赏需要数据
+      g_data.pageJson = {
+        mePreFix:'//me.qidian.com',
+        //讨论区连接环境变量传入EJS模板
+        forumPreFix:'//forum.qidian.com',
+
+        //投票逻辑专用，传给js的bookId
+        bookId: '27263292302202504'
+      };
+
+      //是否可以展示投推荐票弹窗
+      g_data.canVoteRec = 'true';
+
+      //是否可以展示投月票弹窗
+      g_data.canVoteMonth = 'false';
+
+      //是否可以展示打赏弹窗
+      g_data.canReward = 'false';
+
+      // 当前章节是否可读（书籍下架 + 用户付费）
+      g_data.ableToRead = true;
+    </script>
+    <script>
+
+  function setCookie(name, value, domain, path, expires){
+    if(expires){
+      expires = new Date(+new Date() + expires);
+    }
+    var tempcookie = name + '=' + escape(value) +
+      ((expires) ? '; expires=' + expires.toGMTString() : '') +
+      ((path) ? '; path=' + path : '') +
+      ((domain) ? '; domain=' + domain : '');
+
+    //Ensure the cookie's size is under the limitation
+    if(tempcookie.length < 4096) {
+      document.cookie = tempcookie;
+    }
+  }
+
+  function setReferrer(referrerCookieName) {
+    try {
+      var reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+      var seoReferer = document.cookie.match(reg);
+      console.log("get cookie referrer: ", seoReferer)
+      if (seoReferer && seoReferer[2]) {
+        Object.defineProperty(document, "referrer", {
+          value: decodeURIComponent(seoReferer[2])
+        });
+        document.cookie = referrerCookieName + '=;domain=.' + g_data.rootDomain + ';path=/;expires=Thu, 01-Jan-1970 00:00:01 GMT';
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  function jumpIfMobile(mPathName, referrerCookieName) {
+    //判断是移动设备 且 宽度小于1024 且 不是爬虫 后跳转到m站
+    if (
+      window.outerWidth <= 1024
+      && navigator.userAgent.match(/(Android|iPhone|SymbianOS|Windows Phone|iPad|iPod|HarmonyOS)/i)
+      && !navigator.userAgent.match(/spider/i)
+      && location.host.indexOf('.qq.com') === -1
+    ) {
+      var url = location.protocol + "//" + location.host.replace("www.", "m.") + (mPathName || location.pathname)
+      var search = location.search.replace("?", "");
+      if (search) {
+        if (/source=m_jump/.test(search)) {
+          search = search.replace("source=m_jump", "source=pc_jump")
+        } else if (/source=pc_jump/.test(search)) {
+          // do nothing
+        } else {
+          search = (search + "&source=pc_jump")
+        }
+      } else {
+        search = "source=pc_jump"
+      }
+      url = url.indexOf("?") !== -1 ? (url + "&" + search) : (url + "?" + search);
+
+      console.log("set cookie referrer: ", document.referrer)
+      setCookie(referrerCookieName, document.referrer, '.' + g_data.rootDomain, '/', 60000);
+      window.location.href = url;
+    }
+  }
+
+  var referrerCookieName = "seo-jump-referrer";
+  setReferrer(referrerCookieName);
+  jumpIfMobile(window.mPath, referrerCookieName);
+</script>
+
+
+    <meta charset="UTF-8">
+    
+
+
+
+<title>第一章 重生_飒翻天！大佬她又在疯狂打脸小说免费阅读 – 红袖读书</title>
+<meta name="keywords" content="第一章 重生, 飒翻天！大佬她又在疯狂打脸, 飒翻天！大佬她又在疯狂打脸最新章节, 飒翻天！大佬她又在疯狂打脸免费阅读, 飒翻天！大佬她又在疯狂打脸小说">
+<meta name="description" content="【飒翻天！大佬她又在疯狂打脸】“爸还真是老糊涂了，一直纵着这个死丫头。这是要把我们钟家的脸面全部都丢光啊！”“好了，小声一点。要是被爸听到了，肯定会生气的。”就在这两人说话间，那躺在床上的那个女孩子，如同扇翼一般长长的睫毛，此时已经在微微颤动。很快，那眸子便睁开了。黑亮的眸子就如同那透亮到极致的黑宝石，明亮通透，却带着一股摄人的...">
+
+    <meta name="robots" content="all">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="renderer" content="webkit" />
+    <meta name="applicable-device" content="pc">
+    <link rel="shortcut icon" type="image/x-icon" href="//yuxseocdn.yuewen.com/favicon/hongxiu.ico">
+
+    
+    <!-- start mobile and canonical link related -->
+
+
+<meta http-equiv="mobile-agent" content="format=html5; url=https://m.hongxiu.com/chapter/27263292302202504/73745320881739928">
+<link rel="alternate" media="only screen and (max-width:640px)" href="https://m.hongxiu.com/chapter/27263292302202504/73745320881739928">
+<link rel="canonical" href="https://www.hongxiu.com/chapter/27263292302202504/73745320881739928">
+<!-- end mobile and canonical link related -->
+
+    <script>
+        document.domain = 'hongxiu.com';
+    </script>
+
+    <!-- start header 钩子 -->
+    <meta name="applicable-device" content="pc">
+<!-- 移动设备访问PC端跳转的代码被删除 -->
+<!-- 跳转逻辑放在 static/component/mobileJump.js 中 -->
+<link rel="shortcut icon" type="image/x-icon" href="//yuxseocdn.yuewen.com/favicon/hongxiu.ico">
+<link rel="Bookmark" type="image/x-icon" href="//yuxseocdn.yuewen.com/favicon/hongxiu.ico">
+
+
+    <!-- end header 钩子 -->
+
+    <link rel="stylesheet" href="//yuxseocdn.yuewen.com/pro/hongxiu_pc/_prelease/css/lbfUI/css/icon.c9000.css">
+    <link rel="stylesheet" href="//yuxseocdn.yuewen.com/pro/hongxiu_pc/_prelease/css/lbfUI/css/Drag.41d31.css">
+    <link rel="stylesheet" href="//yuxseocdn.yuewen.com/pro/hongxiu_pc/_prelease/css/lbfUI/css/Checkbox.cc633.css">
+    <link rel="stylesheet" href="//yuxseocdn.yuewen.com/pro/hongxiu_pc/_prelease/css/reset.0ea08.css">
+    <link rel="stylesheet" href="//yuxseocdn.yuewen.com/pro/hongxiu_pc/_prelease/css/font.a930e.css">
+    <link rel="stylesheet" href="//yuxseocdn.yuewen.com/pro/hongxiu_pc/_prelease/css/header.f7721.css">
+    <link rel="stylesheet" href="//yuxseocdn.yuewen.com/pro/hongxiu_pc/_prelease/css/module.c38f2.css">
+    <link rel="stylesheet" href="//yuxseocdn.yuewen.com/pro/hongxiu_pc/_prelease/css/footer.c22f8.css">
+    <link rel="stylesheet" href="//yuxseocdn.yuewen.com/pro/hongxiu_pc/_prelease/css/read.ee450.css">
+    <link rel="stylesheet" href="//yuxseocdn.yuewen.com/pro/hongxiu_pc/_prelease/css/layout.1a712.css">
+    <link rel="stylesheet" href="//yuxseocdn.yuewen.com/pro/hongxiu_pc/_prelease/css/popup.49ca7.css">
+    <link rel="stylesheet" href="//yuxseocdn.yuewen.com/pro/hongxiu_pc/_prelease/css/book_popup.b81f2.css">
+    <link rel="stylesheet" href="//yuxseocdn.yuewen.com/pro/hongxiu_pc/_prelease/css/vote_popup.cefaf.css">
+
+    <link rel="stylesheet" href="//yuxseocdn.yuewen.com/pro/hongxiu_pc/_prelease/css/book_details.c4e3d.css">
+</head>
+
+
+<!-- start body 上 class设置  -->
+
+
+<body class=" g_site_hongxiu theme-0  w900">
+<!-- end body 上 class设置  -->
+
+<!-- start 主体容器 -->
+<div class="wrap">
+
+    <!-- start 阅读页头部导航 -->
+    <div class="header">
+    <!-- start 顶部 -->
+    <div class="top-head box-center cf">
+        <!-- start Logo -->
+        <div class="logo" title="红袖读书">
+            <a href="/"><em></em></a>
+        </div>
+        <!-- end Logo -->
+
+        <!-- start 搜索框 -->
+        <div class="search-wrap">
+            
+            <form class="cf" id="formUrl" action="/so" method="get" target="_blank">
+                <input class="search-box" id="s-box" name="kw" type="text" placeholder="傲气如我" autocomplete="off" value="">
+                
+                    <input class="submit-input" type="submit" id="searchSubmit" data-eid=""><label id="search-btn" class="search-btn" for="searchSubmit"><em class="iconfont" data-eid="">&#xe604;</em></label>
+                
+            </form>
+        </div>
+        <!-- end 搜索框 -->
+        
+        <!-- start 用户专区 -->
+        <div class="user-wrap">
+            <div class="avatar" id="j-userWrap"><a class="link" href="javascript:" id="j-avatar"><img src="//yuxseocdn.yuewen.com/pro/hongxiu_pc/_prelease/images/ico/account.1e031.png"></a>
+
+                <!-- start 用户专区下拉框 -->
+                <div class="down-drop" id="j-userDownDrop">
+                    <dl>
+                        <dd><a href="javascript:" id="sign-out">退出</a></dd>
+                    </dl>
+                </div>
+                <!-- end 用户专区下拉框 -->
+            </div>
+            <ul>
+                <li><a class="head-msg" href="javascript:" title="消息中心"><em class="iconfont">&#xe902;</em></a></li>
+                <li><a class="head-shelf" href="javascript:"><em class="iconfont">&#xe62c;</em>我的书架</a></li>
+            </ul>
+        </div>
+        <!-- end 用户专区 -->
+        
+    </div>
+    <!-- end 顶部 -->
+    
+    
+</div>
+
+    <!-- end 阅读页头部导航 -->
+
+    <!-- start 左右广告链接的遮罩-->
+    <div id="j_bodyRecWrap" class="hidden"></div>
+    <!-- start 左右广告链接的遮罩-->
+
+    <!-- start 面包屑导航 单独使用组件 -->
+    <!-- TODO data-bid的问题 -->
+    
+    <div class="crumbs-nav">
+    <a href="/" rel="nofollow">首页</a><em class="iconfont">&#xe621;</em>
+    
+         
+            <a href=/category/30020_f1_f1_f1_f1_f1_0_1>现代言情</a><em class="iconfont">&#xe621;</em>
+        
+    
+        
+            <h2 class="last-nav act">飒翻天！大佬她又在疯狂打脸</h2>
+        
+     
+</div>
+    <!-- end 面包屑导航 -->
+
+    <!-- start 阅读主体容器-->
+    <!-- start 阅读主体容器 上通用设置 -->
+    
+<div class="read-main-wrap font-family01" style="font-size:18px" id="j_readMainWrap">
+    <!-- end 阅读主体容器 上通用设置 -->
+
+
+    
+        <div id="j_chapterBox" data-l1="3">
+            
+                <!-- start 版权页 -->
+                <!-- start 阅读区块容器 -->
+
+
+<div class="text-wrap" id="j_textWrap" data-cid="73745320881739928">
+    <!-- start 阅读正文章节容器 -->
+    <div class="read-container">
+        <!-- start 封面版权信息 -->
+        <div class="book-cover-wrap">
+            <div class="book-photo">
+                <img src="//bookcover.yuewen.com/qdbimg/349573/c_27263292302202504/180">
+            </div>
+            <h1>飒翻天！大佬她又在疯狂打脸</h1>
+            <h2>夏日粉末 著</h2>
+            <div class="info-list cf">
+                <ul>
+                    <li><p>现代言情</p><span>类型</span></li>
+                    <li><em>2023-09-05</em><span>上架</span></li>
+                    <li><p><em>937243</em></p><span>连载中（字）</span></li>
+                </ul>
+            </div>
+
+            <h5>本书由红袖添香网进行电子制作与发行</h5>
+            <h6>&copy;版权所有 侵权必究</h6>
+        </div>
+        <!-- end 封面版权信息 -->
+    </div>
+    <!-- end 阅读正文章节容器 -->
+</div>
+<!-- end 阅读区块容器 -->
+
+                <!-- end 版权页 -->
+            
+            <!-- start 阅读区块容器 -->
+            
+
+<div class="text-wrap" id="chapter-73745320881739928" data-cid="73745320881739928" data-purl="javascript:void(0);" data-nurl="/chapter/27263292302202504/73772670159747147" data-info="0|0|73772670159747147|1|0" >
+    <!-- start 阅读正文容器 -->
+    <div class="main-text-wrap" >
+        <!-- start 正文头部标题信息 -->
+        <div class="text-head">
+            <h1 class="j_chapterName">第一章 重生</h1>
+            <div class="text-info cf">
+                <!-- start 书信息 -->
+                <div class="info fl">
+                    <a href="/book/27263292302202504" target="_blank" data-bid="27263292302202504" data-auid="5396149304016701"><em class="iconfont">&#xe60c;</em>飒翻天！大佬她又在疯狂打脸</a>
+                    <a href="/writer/5396149304016701" target="_blank" data-bid="27263292302202504" data-auid="5396149304016701"><em class="iconfont">&#xe650;</em>夏日粉末</a>
+                    <i><em class="iconfont">&#xe64f;</em><span class="j_chapterWordCut">1007</span>字</i>
+                    <i><em class="iconfont">&#xe653;</em><span class="j_updateTime">2023-09-15 16:53:19</span></i>
+                </div>
+                <!-- end 书信息 -->
+            </div>
+        </div>
+        <!-- end 正文头部标题信息 -->
+
+        <!-- start 阅读章节内容 -->
+        <div class="read-content j_readContent">
+            <style>
+                
+                @font-face {
+                    font-family: ywskythunderfont;
+                    src: 
+                    ;
+                }
+                .ywskythunderfont {
+                    font-family: ywskythunderfont,'Microsoft YaHei',PingFangSC-Regular,HelveticaNeue-Light,'Helvetica Neue Light',sans-serif;
+                }
+                
+            </style>
+            <div class="ywskythunderfont">
+                
+                    <p>　　“爸还真是老糊涂了，一直纵着这个死丫头。这是要把我们钟家的脸面全部都丢光啊！”<p>　　“好了，小声一点。要是被爸听到了，肯定会生气的。”<p>　　就在这两人说话间，那躺在床上的那个女孩子，如同扇翼一般长长的睫毛，此时已经在微微颤动。很快，那眸子便睁开了。<p>　　黑亮的眸子就如同那透亮到极致的黑宝石，明亮通透，却带着一股摄人的寒意。世间万物，在这样的一双眸子面前，都无所遁形。<p>　　在那黑色的眸子中心，似乎还有一道金色的流光时隐时现。<p>　　钟念瑶皱眉，感觉烦闷。<p>　　睡得好好的，突然就被人吵醒的感觉，让她心里真的很不爽。<p>　　随即她便反应过来了，不由得脱口而出，“我不是已经死了吗？”<p>　　是啊！她明明记得，自己应该是已经以身祭天的了。<p>　　“哟，终于醒来了啊！”李依秋马上语带讽刺地开口道，“没有看到你的景明哥哥，是不是很失望啊！”<p>　　“好了，少说两句。”身旁的男子，也就是钟鸣宇伸出手，拉了拉李依秋，“赶紧去喊医生过来看一下吧！”<p>　　李依秋离开以后，钟鸣宇看着躺在床上，脸色惨白的钟念瑶，不觉感到厌烦。<p>　　钟念瑶突然觉得脑瓜子一疼，一大堆完全不属于她的记忆，此时正在不断地涌入她的脑海里面。<p>　　一群穿着白大褂的医生和护士就鱼贯走了进来，为首的医生开始为钟念瑶检查。<p>　　一番检查过后，医生和护士都离开了病房，只留下钟鸣宇夫妻和还躺在床上的钟念瑶。<p>　　看着一言不发的钟念瑶，钟鸣宇的眼神里面充满了怀疑和警惕，“我警告你，要是你真的在做出什么丢人现眼的事情，就不要怪我不客气了。”<p>　　李依秋的脸色也很不好，直接开口就是冷嘲热讽，“还真的是个扫把星。”<p>　　钟鸣宇和李依秋你一字，我一句的，不断地指责着钟念瑶。<p>　　只是看到钟念瑶那漆黑却不见底的眼眸时，他们却不由得感到一阵心惊，甚至不由得打了一个寒战。<p>　　“反正你自己以后好自为之吧！”<p>　　丢下这一句话以后，钟鸣宇和李依秋就离开了房间。<p>　　房间里面非常安静。<p>　　躺在床上的钟念瑶嘴角不由得勾起了一抹意味深长的笑容。<p>　　这难道就是老天爷给她的恩赐吗？因为她救了千千万万的黎民百姓，所以给了她这样一个重生的机会。<p>　　她现在的身份，是帝都豪门世家钟家最小的孙女。刚刚在病房里面对她冷嘲热讽的两个人，就是她的二伯钟鸣宇和二伯母李依秋。<p>　　钟家是帝都的豪门世家，历代从商，只要是做珠宝生意的。现在钟家的掌权人，是钟老爷子钟海荣。<p>　　钟海荣一共有三个儿子，大儿子钟鸣浩，二儿子钟鸣宇，和小儿子钟鸣信。<p>　　钟念瑶是钟鸣信唯一的女儿，早在她三岁左右的时候，钟鸣信就突然失踪了，直到现在都还没有任何的消息。
+                    <script id="enContentLoader">
+                        window.fkp = "d2luZG93Lm9ua2V5Zm9jdXMoIkRRQWNwR3VJSTdMb1lYSlNnR3NQZVMxN2R0VUh0MVJoOTh5R1B3ZThaWXBKMDJ1K3ZPbzNpd1FYSjZPdFVFUUpWN01Edks4VWFRRHAvS29hWnF1UUpNdkhEWVlPNmFLQWVhNHRkUURiVFY4cmNqWjZ4Sy9vYTl4a1hiRjZ6czN3IiwgMTYzMjI3OTEyMyk=";
+                    </script>
+                
+            </div>
+        </div>
+
+        
+
+        <!-- end 阅读章节内容 -->
+        
+        <!-- start 赞赏和举报 -->
+        <div class="admire-wrap">
+            <a class="end-guide-btn red-btn j-showGuidePopup" href="javascript:void(0)" rel="nofollow">
+                
+                    去APP,免费畅读
+                
+                <span class="hover2show download-qrcode"></span>
+            </a>
+            <a class="report-btn j_reportBtn" href="javascript:" data-eid="qd_R106"><em class="iconfont">&#xe657;</em>举报</a>
+            <!--<div class="read-btn-box">
+                <a class="admire lang j_admireBtn" href="javascript:" data-showtype="3" data-eid="qd_R105">赞赏<span class="j_admireNum"></span></a>
+            </div>-->
+        </div>
+        <!-- end 赞赏和举报-->
+        
+
+    </div>
+    <!-- end 阅读正文容器 -->
+</div>
+
+
+            <!-- end 阅读区块容器 -->
+        </div>
+        <!-- start 章节控制器 -->
+        
+<div class="chapter-control dib-wrap" data-l1="3">
+    
+    <a id="j_chapterPrev" class="disabled"  href="javascript:void(0);">上一章</a><span>|</span>
+    <a href="/chapterlist/27263292302202504" target="_blank">目录</a><span>|</span>
+    <a id="j_chapterNext" href="/chapter/27263292302202504/73772670159747147">下一章</a>
+</div>
+<div class="chapter-control-tip">
+    按 “键盘左键←” 返回上一章&nbsp;&nbsp;按 “键盘右键→” 进入下一章&nbsp;&nbsp;按 “空格键” 向下滚动
+</div>
+
+        <!-- end 章节控制器 -->
+
+    
+
+
+        <!-- start 预加载 -->
+        <div class="la-ball-pulse j_chapterLoad hidden">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <!-- end 预加载 -->
+    </div>
+    <!-- end 阅读主体容器-->
+</div>
+<!-- end 主体容器 -->
+
+
+<!-- start 跟随滚动条的容器 -->
+
+<div class="float-wrap" id="j_floatWrap">
+    <!-- start 左工具栏 -->
+    <div class="left-bar-list" id="j_leftBarList">
+        <!-- start 按钮列表 -->
+        <dl>
+            <dd id="j_navCatalogBtn">
+                <a href="javascript:"><i><em class="iconfont">&#xe619;</em><span>目录</span></i></a>
+                <div class="guide-box">
+                    <cite></cite>
+                    目录
+                </div>
+            </dd>
+            <dd id="j_navSettingBtn">
+                <a href="javascript:"><i><em class="iconfont">&#xe65b;</em><span>设置</span></i></a>
+                <div class="guide-box">
+                    <cite></cite>
+                    设置
+                </div>
+            </dd>
+            <!--<dd id="j_phoneRead">
+                <a href="javascript:"><i><em class="iconfont">&#xe65c;</em><span>手机</span></i></a>
+                <div class="guide-box">
+                    <cite></cite>
+                    手机阅读
+                </div>
+            </dd>-->
+            <dd>
+                <a class="add-book" href="javascript:" data-bookid="27263292302202504"><i><em class="iconfont">&#xe654;</em><span>书架</span></i></a>
+                <div class="guide-box">
+                    <cite></cite>
+                    加入书架
+                </div>
+            </dd>
+            <dd>
+                <a href="/book/27263292302202504" target="_blank"><i><em class="iconfont">&#xe652;</em><span>书页</span></i></a>
+                <div class="guide-box">
+                    <cite></cite>
+                    返回书页
+                </div>
+            </dd>
+           <!-- <dd id="j_navGameBtn" data-eid="qd_R86">
+                <a href="javascript:"><i><em class="iconfont">&#xe65e;</em><span>游戏</span></i></a>
+                <div class="guide-box">
+                    <cite></cite>
+                    起点游戏
+                </div>
+            </dd>-->
+
+            
+            
+        </dl>
+        <!-- end 按钮列表 -->
+
+    </div>
+    <!-- end 左工具栏 -->
+
+    <!-- start 右工具栏 -->
+    <div class="right-bar-list" id="j_rightBarList">
+        <dl>
+            
+            
+            <dd id="navTicket" data-showtype="2" data-aid="qd_R88">
+                <a class="j_showVoteWrap" href="javascript:"><i><em class="iconfont">&#xe65d;</em><span>投票</span></i></a>
+                <div class="guide-box">
+                    <cite></cite>
+                    投票
+                </div>
+            </dd>
+            
+            <dd class="go-top" id="j_goTop" title="返回顶部">
+                <a href="javascript:"><i><em class="iconfont">&#xe651;</em></i></a>
+            </dd>
+            <!--<dd class="hongbao" id="j_hongbao" title="抢红包" data-eid="qd_R91">
+                <a href="javascript:"><i><b></b></i></a>
+            </dd>-->
+        </dl>
+    </div>
+    <!-- end 右工具栏 -->
+
+    <!-- start 打开指南 -->
+    <div class="guide-btn-wrap">
+        <a class="guide-btn" id="j_guideBtn" href="javascript:">指南</a>
+    </div>
+    <!-- end 打开指南 -->
+</div>
+<!-- end 跟随滚动条的容器 -->
+
+<div id="userLevel" class="hidden"></div>
+<div id="authorId" data-authorid="5396149304016701" class="hidden"></div>
+
+
+
+
+
+<!-- ejs 指南弹窗，滚动加载章节模板 -->
+<script id="guidePopup.html" type="text/ejs-template">
+    <!-- start 指南弹窗 -->
+    <div class="guide-popup tip-popup">
+        <!-- start 标题 -->
+        <div class="popup-title">
+            <h3 class="lang">指南</h3>
+        </div>
+        <!-- end 标题 -->
+        <!-- start 指南图示 -->
+        <div class="guide-img">
+            <p></p>
+        </div>
+        <!-- end 指南图示 -->
+        <!-- start 弹窗按钮 -->
+        <div class="popup-btn">
+            <a class="red-btn" id="j_closeGuide" href="javascript:">关闭</a>
+        </div>
+        <!-- end 弹窗按钮 -->
+    </div>
+    <!-- end 指南弹窗 -->
+</script>
+<script id="navCatalogBox.html" type="text/ejs-template">
+<!-- start 目录面板浮层 -->
+<div class="panel-wrap catalog" id="j_catalog">
+    <a class="iconfont close-panel" href="javascript:">&#xe61f;</a>
+    <div class="panel-box">
+        <!-- start 目录书签切换按钮 -->
+        <div class="catalog-tab dib-wrap" id="j_catalogTab">
+            <span class="lang act">目录</span>
+            <%
+            //用户未登陆不显示书签tab
+            if( loginStatus == 1 ){
+            %>
+            <!--<span class="lang" id="j_markerBtn">书签</span>-->
+            <%}%>
+        </div>
+        <!-- end 目录书签切换 -->
+
+        <!-- start 目录书签切换容器-->
+        <div id="j_catalogTabWrap">
+            <!-- start 目录列表 -->
+            <div class="panel-list-wrap catalog-scroll-wrap" id="j_catalogListWrap">
+                <div class="loading">
+                    <span></span>
+                    <p>请稍后...</p>
+                </div>
+            </div>
+            <!-- end 目录列表 -->
+            <% if( loginStatus == 1 ){ %>
+            <!-- start 书签列表 -->
+            <!--<div class="panel-list-wrap bookmark-list-wrap hidden" id="j_bookMarkList">
+                <div class="loading">
+                    <span></span>
+                    <p>请稍后...</p>
+                </div>
+            </div>-->
+            <!-- end 书签列表 -->
+            <%}%>
+        </div>
+        <!-- end 目录书签切换容器-->
+    </div>
+</div>
+<!-- end 目录面板浮层 -->
+</script>
+<script id="navCatalog.html" type="text/ejs-template">
+    <div class="catalog-list-wrap">
+        <%
+        var volumes = vs,
+        volumesLen = volumes.length,
+        volumesCs,
+        volumesCsLen,
+        cUrl;
+        if( envType == 'pro'){
+        envType = '';
+        }
+        for(var k = 0 ;k < volumesLen ; k++ ){
+        %>
+        <h3><i><em class="iconfont up">&#xe622;</em><em class="iconfont down">&#xe623;</em><cite><%=volumes[k].vN
+            %></cite><% if(volumes[k]['vS'] == 1) { %><span>VIP</span><% } %></i></h3>
+        <!-- start 卷列表 -->
+        <%
+        volumesCs = volumes[k].cs;
+        volumesCsLen = volumesCs.length;
+        if( volumesCsLen != 0 ){
+        %>
+        <div class="volume-list">
+            <ul>
+                <%
+                for(var z=0; z < volumesCsLen ; z++ ) {
+                cUrl = '/chapter/'+ bId +'/'+ volumesCs[z]['id'] ;
+                %>
+                <li id="nav-chapter-<%=volumesCs[z]['id']%>">
+                    <% if( volumesCs[z].fS == 1 && volumesCs[z].sS == 0 ){%><em class="iconfont">&#xe63c;</em><%}%>
+                    <a href="<%=cUrl %>"><%=volumesCs[z].cN %></a>
+                </li>
+                <% } %>
+            </ul>
+        </div>
+        <!-- end 卷列表 -->
+        <% } else { %>
+        <div class="volume-list no-data">
+            <div class=iconfont>&#xe663;</div>
+            <p>该卷还没有更新章节</p>
+        </div>
+        <% }
+        } %>
+    </div>
+</script>
+<script id="navSetting.html" type="text/ejs-template">
+    <!-- start 设置面板浮层 -->
+    <div class="panel-wrap setting" id="j_setting">
+        <a class="iconfont close-panel setting-close" href="javascript:">&#xe61f;</a>
+        <div class="panel-box">
+            <h4 class="lang">设置</h4>
+            <div class="setting-list-wrap">
+                <ul>
+                    <li class="theme-list" id="j_themeList">
+                        <i>阅读主题</i>
+                        <%
+                        //为了兼容线上,现有主题对应的值
+                        var newSetNum = [0,1,2,3,4,5,6],
+                        coloTxt = ['默认','牛皮纸','淡绿色','淡蓝色','淡粉色','灰色','黑色'];
+                        for(var i = 0; i < 7; i++) {
+                        var act = '';
+                        if( newSetNum[i] == t ) {
+                        act='act';
+                        }
+                        %>
+                        <span title="<%=coloTxt[i]%>" class="theme-<%=i%> <%=act%>" data-stc="<%=newSetNum[i]%>" data-st="<%=i %>"><em class="iconfont">
+                            &#xe664;</em><% if( i == 6 ){ %><cite class="iconfont">&#xe665;</cite><%}%></span>
+                        <% } %>
+                    </li>
+                    <li class="font-family" id="j_fontFamily"><i>正文字体</i>
+                        <%
+                        var ztList = ['雅黑'],
+                        ztListLen = ztList.length ;
+                        for( var i = 0 ; i < ztListLen ; i++ ){
+                        %>
+                        <span data-st="<%=i%>" class="yahei <%if( i == ft ){%>act<%}%>"><%=ztList[i]%></span>
+                        <%
+                        }
+                        %>
+                    </li>
+                    <li class="font-size" id="j_fontSize"><i>字体大小</i>
+                        <cite>
+                            <span class="prev"><em class="iconfont">&#xe656;</em></span><b></b>
+                            <span class="lang"><%=(12+fs*2)%></span><b></b>
+                            <span class="next"><em class="iconfont">&#xe660;</em></span>
+                        </cite>
+                    </li>
+                    <li class="page-width" id="j_pageWidth">
+                        <i>页面宽度</i>
+                        <cite>
+                            <%
+                            var setW = ['640','800','900','1280'],
+                            setWidthText = setW[w];
+                            %>
+                            <span class="prev"><em class="iconfont">&#xe655;</em></span><b></b>
+                            <span class="lang"><%=setWidthText%></span><b></b>
+                            <span class="next" å><em class="iconfont">&#xe65f;</em></span>
+                        </cite>
+                    </li>
+                    <li class="read-mode" id="j_readMode">
+                        <i>阅读方式</i>
+                        <%
+                        //阅读方式,rt == 0 翻页方式 ; rt == 1 瀑布流
+                        %>
+                        <span data-st="0" <%if( rt == 0 ){%>class="act"<%}%>><em class="iconfont">&#xe64e;</em></span>
+                        <!-- <span data-st="1" <%if( rt == 1 ){%>class="act"<%}%>><em class="iconfont">&#xe65a;</em></span> -->
+                    </li>
+                    <li class="remind">
+                        <i>自动订阅</i>
+                        <cite class="auto-switch">
+                            <em class="off" id="j_SubscribeAuto"><a class="lang " id="j_autoSwitch" title="不再展示订阅提醒,自动订阅下一章" href="javascript:">关闭</a></em>
+                        </cite>
+                        <span class="remind-voice">不再展示订阅提醒,自动订阅下一章</span>
+                    </li>
+                </ul>
+                <div class="btn-wrap dib-wrap">
+                    <a class="red-btn" id="j_setSave" href="javascript:">保存</a>
+                    <a class="grey-btn" id="j_setCancel" href="javascript:">取消</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end 设置面板浮层 -->
+</script>
+<script id="chapter.html" type="text/ejs-template">
+    <%
+    //判断上一章下一章的url,以及关联信息
+    var pUrl = (cInfo.prevCcid ) ? '/chapter/' + bInfo.bookId + '/' + cInfo.prevCcid : 'javascript:void(0);',
+    nUrl = (cInfo.nextCcid ) ? '/chapter/' + bInfo.bookId + '/' + cInfo.nextCcid : '/lastpage/'+ bInfo.bookId,
+    setInfo = cInfo.vipStatus + '|' + cInfo.prevCcid + '|' + cInfo.nextCcid + '|' + cInfo.isBuy + '|' + cInfo.nextVipStatus ;
+    %>
+    <div class="text-wrap" id="chapter-<%=cInfo.chapterId %>" data-cid="<%=cInfo.chapterId %>" data-purl="<%=pUrl%>" data-nurl="<%=nUrl%>" data-info="<%=setInfo %>">
+        <!-- start 阅读正文容器 -->
+        <div class="main-text-wrap">
+            <!-- start 正文头部标题信息 -->
+            <div class="text-head">
+                <!--<div class="guide-box">
+                    <cite></cite>
+                    <p>点击书签后，可收藏每个章节的书签，“阅读进度”可以在个人中心书架里查看</p>
+                </div>
+                <a class="book-mark" href="javascript:" title="书签" data-cid="<%=cInfo.chapterId %>" data-bid="<%=bInfo.bookId%>" data-auid="<%=bInfo.authorId %>" data-eid="qd_R104"></a>-->
+                <h1 class="j_chapterName"><%=cInfo.chapterName %></h1>
+                <div class="text-info cf">
+                    <!-- start 书信息 -->
+                    <div class="info fl">
+                        <a href="/book/<%=bInfo.bookId%>" target="_blank" data-bid="<%=bInfo.bookId%>" data-auid="<%=bInfo.authorId %>"><em class="iconfont">
+                            &#xe60c;</em><%= bInfo.bookName %></a>
+                        <a href="javascript:void(0);" target="_blank" data-bid="<%=bInfo.bookId%>" data-auid="<%=bInfo.authorId %>"><em class="iconfont">
+                            &#xe650;</em><%=bInfo.author%></a>
+                        <i><em class="iconfont">
+                            &#xe64f;</em><span class="j_chapterWordCut"><%=cInfo.wordsCount %></span>字</i>
+                        <i><em class="iconfont">
+                            &#xe653;</em><span class="j_updateTime"><%=cInfo.updateTime %></span></i>
+                    </div>
+                    <!-- end 书信息 -->
+                </div>
+            </div>
+            <!-- end 正文头部标题信息 -->
+            <!-- start 阅读章节内容 -->
+            <div class="read-content j_readContent">
+                <style>
+                    <% if (cInfo.base64ConfList) {%>
+                    @font-face {
+                        font-family: <%=cInfo.fontFamily%>;
+                        src: <% for(var i=0; i < cInfo.base64ConfList.length; i++) { %>url(<%=cInfo.base64ConfList[i].base64Content%>) format('<%=cInfo.base64ConfList[i].fontsType%>')<% if (i + 1 !== cInfo.base64ConfList.length) {%>, <% } %><% } %>
+                        ;
+                    }
+                    .<%=cInfo.fontFamily%> {
+                        font-family: <%=cInfo.fontFamily%>,'Microsoft YaHei',PingFangSC-Regular,HelveticaNeue-Light,'Helvetica Neue Light',sans-serif;
+                    }
+                    <% } %>
+                </style>
+                <div class="<%=cInfo.fontFamily%>">
+                    <%-cInfo.content %>
+                </div>
+            </div>
+            <!-- end 阅读章节内容 -->
+
+            <% if(cInfo.authorSay != '') { %>
+            <!-- start 作家感言 -->
+            <div class="author-say cf">
+                <div class="right-bg"></div>
+                <div class="avatar"><img src="<%=authorInfo.avatar%>"></div>
+                <div class="say-info">
+                    <h3><%=authorInfo.bAuth%></h3>
+                    <p><%=cInfo.authorSay%></p>
+                </div>
+            </div>
+            <!-- end 作家感言 -->
+            <% } %>
+
+            <%
+            //章节为vip章节,且未订阅时显示
+            if( cInfo.vipStatus == 1 && cInfo.isBuy == 0 ) {
+            %>
+            <!-- start 需订阅后才能阅读-->
+            <div class="vip-limit-wrap">
+                <% if (bInfo.allowSubscription) { %>
+                <h3 class="lang"><i>这是VIP章节</i>需要订阅后才能阅读</h3>
+                <% } %>
+                <%
+                //判断用户是否登录
+                var totalText = '',
+                chapterText = '<span><i>' + cInfo.price + '</i>' + staticConf.coinName + '</span>';
+                totalClass = '';
+
+                if( isLogin == 1 ){
+                totalText = '<span><i>' + cInfo.totalPrice + '</i>' + staticConf.coinName + '</span><cite>订阅章节：共<s class="j_chapterNum">' +
+                cInfo.totalChapter + '</s>章</cite>' ;
+                }
+                %>
+                <div class="subscribe-btn-wrap dib-wrap <%=totalClass %>">
+                    <!--<a class="all j_subscribeBtn " data-soa="1" href="javascript:" data-eid="qd_R112"><em>全部订阅</em><%-totalText %></a>-->
+                    <% if (bInfo.allowSubscription) { %>
+                    <a class="single j_subscribeBtn border-btn" data-soa="0" data-uid="<%=cInfo.uuid%>" href="javascript:" data-eid="qd_R113">
+                        <em>订阅本章</em>
+                        <%-chapterText%>
+                    </a>
+                    <% } %>
+                    <a class="red-btn app-guide j-showGuidePopup" href="javascript:void(0)">
+                        <div class="box">
+                            <b id="j-readText">
+                                免费阅读
+                            </b>
+                            <span>下载APP</span>
+                            <span class="hover2show download-qrcode"></span>
+                        </div>
+                    </a>
+                </div>
+                <% if (bInfo.allowSubscription) { %>
+                <p>
+                    <span class="lbf-checkbox j_autoSubs">
+                        <input id="j_autoSubscribe" type="checkbox">
+                    </span>
+                    <label class="j_autoSubs">不再显示订阅提醒，自动订阅下一章</label>
+                </p>
+                <% } %>
+            </div>
+            <!-- end 需订阅后才能阅读-->
+            <%
+            } else {
+            %>
+            <!-- start 赞赏和举报 -->
+            <div class="admire-wrap">
+                <a class="end-guide-btn red-btn j-showGuidePopup" href="javascript:void(0)" rel="nofollow">
+                    <% if(guide2app === 'qq' && isQReaderNoFreeBook) { %>
+                        去APP，第一时间看更新
+                    <% } else { %>
+                        去APP,免费畅读
+                    <% } %>
+                    <span class="hover2show download-qrcode"></span>
+                </a>
+                <a class="report-btn j_reportBtn" href="javascript:" data-eid="qd_R106"><em class="iconfont">
+                    &#xe657;</em>举报</a>
+                <!--<div class="read-btn-box">
+                    <a class="admire lang j_admireBtn" href="javascript:" data-showtype="3" data-eid="qd_R105">赞赏<span class="j_admireNum"></span></a>
+                </div>-->
+            </div>
+            <!-- end 赞赏和举报-->
+            <% } %>
+        </div>
+        <!-- end 阅读正文容器 -->
+    </div>
+</script>
+
+<script id="reportPopup.html" type="text/ejs-template">
+    <!-- start 举报弹窗 -->
+    <div class="report-popup">
+        <!-- start 标题 -->
+        <div class="popup-title">
+            <h3 class="lang">章节举报</h3>
+        </div>
+        <!-- end 标题 -->
+        <!-- start 章节举报容器 -->
+        <div class="report-wrap">
+            <h3>举报对象</h3>
+            <p class="j_reportChapterName"><%=chapterName %></p>
+            <h3>举报类型</h3>
+            <div class="type">
+                <input id="r1" type="radio" name="report-radio"/>
+                <label for="r1">色情低俗</label>
+                <input id="r2" type="radio" name="report-radio"/>
+                <label for="r2">暴力血腥</label>
+                <input id="r3" type="radio" name="report-radio"/>
+                <label for="r3">涉嫌违规</label>
+                <input id="r4" type="radio" name="report-radio"/>
+                <label for="r4">欺诈广告</label>
+                <input id="r5" type="radio" name="report-radio"/>
+                <label for="r5">抄袭侵权</label>
+                <input id="r6" type="radio" name="report-radio"/>
+                <label for="r6">涉未成年人不良信息</label>
+                <input id="r7" type="radio" name="report-radio"/>
+                <label for="r7">其他举报</label>
+            </div>
+            <h3>举报描述</h3>
+            <div class="count-text">
+                <span class="count"><em id="reportCounter">0</em>/100</span>
+                <textarea class="j_reportMsgText"></textarea>
+            </div>
+            <!-- start 弹窗按钮 -->
+            <div class="popup-btn">
+                <a class="red-btn" id="j_accusationBtn" data-cid="<%=chapterId%>" href="javascript:">确定</a>
+            </div>
+            <!-- end 弹窗按钮 -->
+        </div>
+        <!-- end 章节举报容器 -->
+    </div>
+    <!-- end 举报弹窗 -->
+</script>
+<!-- ejs 订阅弹窗 -->
+<script id="subscribePopup.html" type="text/ejs-template">
+    <div class="book-popup subscribe-popup" id="subscribePopup">
+        <!-- start 标题 -->
+        <div class="popup-title">
+            <h3 class="lang"><%= data['title']||'订阅'%></h3>
+        </div>
+        <!-- end 标题 -->
+        <!-- start 订阅提示信息 -->
+        <div class="sub-content">
+            <!--start 订阅余额足够情况下 1-->
+            <%if(sign['suffiBalanceAlert'] == true){
+            /*
+            第一次点击支付是需要二次确认的，因此默认值设置为j_confirm
+            */
+            var actionType = 'j_paynow';
+            if(data['actionType'] == 'pay'){
+            actionType = 'j_paynow';
+            }
+            %>
+            <div class="tip">
+                <%if(data['changed']){
+                if(data['changed'] == true){%>
+                <div class="warning-tip">
+                    <p>
+                        <a class="j_refresh_price blue fr" href="javascript:">刷新价格</a><span>价格发生变动，请重新确认支付金额</span>
+                    </p>
+                </div>
+                <%}}%>
+                <h4>本次订阅将消耗<span><%= data['totalPrice']%></span>红袖币</h4>
+                <p>当前余额为<em><%= data['balan']%></em>红袖币</p>
+                <div class="popup-btn">
+                    <a class="red-btn <%= actionType%>" href="javascript:">立即支付</a>
+                </div>
+            </div>
+            <%}%>
+            <!--end 订阅余额足够情况下 -->
+            <!--start 订阅余额不足够情况下 2-->
+            <%if(sign['insuffiBalanceAlert'] == true){
+            var actionType = 'j_quickpay';
+            if(data['actionType'] == 'pay'){
+            actionType = 'j_quickpay';
+            }
+            %>
+            <div class="tip">
+                <%if(data['changed']){
+                if(data['changed'] == true){%>
+                <div class="warning-tip">
+                    <p>
+                        <a class="j_refresh_price blue fr" href="javascript:">刷新价格</a><span>价格发生变动，请重新确认支付金额</span>
+                    </p>
+                </div>
+                <%}}%>
+                <h4>本次订阅将消耗<span class="current-price"><%= data['totalPrice']%></span>红袖币</h4>
+                <p>当前余额为<em class="current-balance"><%= data['balan']%></em>红袖币<i>&#183;</i>还需支付<span class="diff"><%= data['totalPrice']-data['balan']%></span>红袖币
+                </p>
+<!--                <div class="popup-btn">-->
+<!--                    &lt;!&ndash;<a class="red-btn <%= actionType%>" href="javascript:" data-eid="qd_G92">快捷支付</a>&ndash;&gt;-->
+<!--                    <a class="red-btn j_charge" href="javascript:">去充值</a>-->
+<!--                </div>-->
+            </div>
+            <%}%>
+            <!--end 订阅余额不足够情况下 -->
+            <!-- start 订阅状态 - 成功 3-->
+            <%if(sign['subSuccessAlert'] == true){%>
+            <div class="tip-state">
+                <span class="ok"></span>
+                <h4>订阅成功</h4>
+                <div class="popup-btn">
+                    <a class="red-btn j_read_now" href="javascript:">立即阅读</a>
+                    <a class="blue-btn j_success_close" href="javascript:">关闭</a>
+                </div>
+            </div>
+            <%}%>
+            <!-- end 订阅状态 - 成功 -->
+            <!-- start 订阅状态 - 失败 4-->
+            <%if(sign['subFailedAlert'] == true){%>
+            <div class="tip-state">
+                <span class="error"></span>
+                <h4>订阅失败<cite>其他消费导致账户余额不足</cite></h4>
+                <div class="popup-btn">
+                    <a class="red-btn j_close" href="javascript:">重新订阅</a>
+                    <a class="blue-btn" href="//me.qidian.com/account/consumeLog.aspx?type=1&page=1" target="_blank">查看消费记录</a>
+                </div>
+            </div>
+            <%}%>
+            <!-- end 订阅状态 - 失败 -->
+            <!-- start 订阅状态 - 等待支付 5-->
+            <%if(sign['waitPaymentAlert'] == true){%>
+            <div class="tip-state">
+                <span class="wait"></span>
+                <h4>请在新开页中完成支付</h4>
+                <div class="popup-btn">
+                    <a class="red-btn j_catch_trouble" href="//kf.qidian.com/Default.aspx" target="_blank">遇到问题</a>
+                </div>
+            </div>
+            <%}%>
+            <!-- end 订阅状态 - 等待支付 -->
+            <!-- start 订阅状态 - 等待支付 余额充足情况下直接支付 6-->
+            <%if(sign['waitSubscribe'] == true){%>
+            <div class="loading-wrap">
+                <div class="loading">
+                    <span></span>
+                    <p>请稍后...</p>
+                </div>
+            </div>
+            <%}%>
+            <!-- end 订阅状态 - 等待支付  -->
+            <!--start 订阅状态-网络异常 7-->
+            <%if(sign['networkBlock'] == true){%>
+            <div class="tip-state">
+                <span class="error"></span>
+                <h4>网络异常</h4>
+                <div class="popup-btn">
+                    <a class="red-btn j_retry_polling" href="javascript:">重新尝试</a>
+                </div>
+            </div>
+            <%}%>
+            <!--end 订阅状态-网络异常-->
+            <!-- start 订阅状态 - 非常用code时的通用失败 9-->
+            <%if(sign['commonErrorAlert'] == true){%>
+            <div class="tip-state">
+                <span class="error"></span>
+                <h4><%= data['msg']%><cite></cite></h4>
+                <div class="popup-btn">
+                    <a class="red-btn close" href="javascript:">重新订阅</a>
+                    <!--<a class="blue-btn" href="//me.qidian.com/account/consumeLog.aspx?type=1&page=1" target="_blank">查看消费记录</a>-->
+                </div>
+            </div>
+            <%}%>
+            <!-- end 订阅状态 - 非常用code时的通用失败 -->
+        </div>
+        <!-- end 订阅提示信息 -->
+    </div>
+</script>
+
+
+<!-- ejs 后加载的投票互动模板 -->
+<script id="monthPopup.html" type="text/ejs-template">
+<!-- start 无限制可以投票 status=0为可投状态-->
+<%if(data.status == 0){%>
+<div class="no-limit-wrap">
+    <h3>剩余月票数<span><%= data.monthTicketCnt%></span>张<i>·</i>当前最多能投<span id="monthSurplus"><%= data.enableCnt%></span>张</h3>
+    <div class="vote-form-wrap">
+        <h4>投票数量</h4>
+        <div class="vote-wrap mb160 cf">
+            <a class="subtract" id="subMonth" href="javascript:" data-eid="qd_G108"><span></span></a>
+            <div class="ticket-num fl">
+                <span class="month-ticket" id="mTicket">
+
+                    <%
+                    var maxCnt = data.enableCnt;
+                    if(maxCnt > 5){
+                        maxCnt = 5;
+                    }
+                    for(var i = 0; i < maxCnt; i++){%>
+                    <b></b>
+                    <%}%>
+                </span><i id="monthNum"><%= data.enableCnt%></i>
+            </div>
+            <a class="add disabled" id="addMonth" href="javascript:" data-eid="qd_G109"><span><em></em></span></a>
+        </div>
+    </div>
+    <div class="popup-btn">
+        <a class="red-btn" id="voteMonth" href="javascript:" data-eid="qd_G57">立即投票</a>
+    </div>
+</div>
+<!-- end 无限制可以投票 -->
+
+<!-- start 无投票资格-->
+<%}else if(data.status == 2){%>
+<div class="limit-wrap" id="noPrivilege">
+    <div class="null no-ticket"></div>
+    <h3>无投票资格</h3>
+    <h4><a class="blue" href="/help?id=11166" target="_blank">提升会员等级</a>可获得投票资格</h4>
+    <p class="bottom"><a href="/help?id=11164" target="_blank">投月票规则</a></p>
+</div>
+<!--end 无投票资格-->
+
+<!-- start 有限制，暂无月票 -->
+<%}else if(data.status == 3){%>
+<div class="limit-wrap">
+    <div class="null no-ticket"></div>
+    <h3>暂无月票</h3>
+    <p class="bottom"><a href="/help?id=11164" target="_blank">如何获得月票</a><em>|</em><a href="/help?id=11164" target="_blank">投月票规则</a></p>
+</div>
+<!-- end 有限制，暂无月票 -->
+
+<!-- start post请求后如果限额用完 当日限额-->
+<%}else if(data.status == 4){%>
+<div class="limit-wrap" id="outOfDayLimit">
+    <div class="null no-ticket"></div>
+    <h3>今日<span>2</span>张限额已用完</h3>
+    <p class="bottom"><a href="/help?id=11164" target="_blank">投月票规则</a></p>
+</div>
+<!-- end post请求后如果限额用完 当日限额-->
+
+<!-- start 未收藏该书-->
+<%}else if(data.status == 5){%>
+<div class="limit-wrap" id="commonError">
+    <h3 class="error-tip">对不起，您没有收藏该书</h3>
+</div>
+<!-- end 未收藏该书-->
+
+<!-- start 当月限额用完-->
+<%}else if(data.status == 6){%>
+<div class="limit-wrap" id="outOfDayLimit">
+    <div class="null no-ticket"></div>
+    <h3>当月<span>5</span>张限额已用完</h3>
+    <p class="bottom"><a href="/help?id=11164" target="_blank">投月票规则</a></p>
+</div>
+<!-- end 当月限额用完-->
+
+<!-- start 获取信息失败-->
+<%}else if(data.status == 9){%>
+<div class="limit-wrap" id="commonError">
+    <h3 class="error-tip">对不起，无此书籍信息</h3>
+</div>
+<!-- end 获取信息失败-->
+
+<!-- start 未登录-->
+<%}else if(data.status == 1000){%>
+<div class="limit-wrap" id="commonError">
+    <h3 class="error-tip">您还未登录，<a href="javascript:" class="j_login">立即登录</a></h3>
+</div>
+<!-- end 未登录-->
+
+<!-- start 通用错误 外层code不等于0 -->
+<%}else if(data.status == -1){%>
+<div class="limit-wrap" id="commonError">
+    <h3 class="error-tip"><%= msg%></h3>
+</div>
+<%}else{%>
+<!-- end 通用错误 -->
+
+<!-- start 其他status情况 -->
+<div class="limit-wrap" id="commonError">
+    <h3 class="error-tip"><%= data.statusMsg%></h3>
+</div>
+<!-- end 其他status情况 -->
+<%}%>
+</script>
+<script id="postRewardPopup.html" type="text/ejs-template">
+    <%if(data.status == -2004){%>
+    <div class="limit-wrap" id="noMoney">
+        <div class="null no-money"></div>
+        <h3>账户余额不足</h3>
+        <h4>本次打赏<em class="calcReward"><%= data.amount%></em>红袖币</h4>
+        <h5>账户余额 <span id="balance"><%= data.balance%></span> 红袖币<i>&#183;</i>还差<em class="f14" id="differ"><%=
+            data.amount - data.balance%></em>红袖币</h5>
+<!--        <p class="popup-btn"><a class="red-btn j_charge" href="javascript:" target="_blank">去充值</a></p>-->
+    </div>
+    <!-- end 有限制不可以打赏 余额不足 -->
+    <%}%>
+</script>
+
+<script id="recPopup.html" type="text/ejs-template">
+    <!-- start 无限制可以投票 -->
+    <%if(data.status == 0){%>
+    <div class="no-limit-wrap">
+        <h3>剩余推荐票数<span><%= data.recomTicketCnt%></span>张<i>·</i>当前最多能投<span id="recSurplus"><%= data.enableCnt%></span>张
+        </h3>
+        <div class="vote-form-wrap">
+            <h4>投票数量</h4>
+            <div class="vote-wrap mb160 cf">
+                <a class="subtract " id="subRec" href="javascript:" data-eid="qd_G110"><span></span></a>
+                <div class="ticket-num fl"> <span class="rec-ticket" id="recTicket">
+
+                <%
+                var maxCnt = data.enableCnt;
+                if(maxCnt > 5){
+                    maxCnt = 5;
+                }
+                for(var i = 0; i < maxCnt; i++){%>
+                <b></b>
+                <%}%>
+                </span><input id="recNum" maxlength="<%= data.enableCnt%>" value="<%= data.enableCnt%>"></div>
+                <a class="add" id="addRec" href="javascript:" data-eid="qd_G111"><span><em></em></span></a>
+            </div>
+            <!--<h4>留言鼓励</h4>
+            <div class="message-wrap">
+                <textarea id="recMsgText">这本书太棒了，犒劳一下，希望后续更加精彩！</textarea>
+            </div>-->
+        </div>
+        <div class="popup-btn">
+            <a class="red-btn" id="voteRec" href="javascript:" data-eid="qd_G58">立即投票</a>
+        </div>
+    </div>
+    <!-- end 无限制可以投票 -->
+    <!-- start 书籍审核等级不够-->
+    <%}else if(data.status == 1){%>
+    <div class="limit-wrap" id="commonError">
+        <h3 class="error-tip">书籍审核等级不够</h3>
+    </div>
+    <!-- end 书籍审核等级不够-->
+    <!-- start 暂无推荐票 -->
+    <%}else if(data.status == 2){%>
+    <div class="limit-wrap">
+        <div class="null no-ticket"></div>
+        <h3>暂无推荐票</h3>
+        <h4><a href="/help?id=11165" target="_blank">如何获得推荐票？</a></h4>
+        <p class="bottom"><a href="/help?id=11165" target="_blank">投推荐票规则</a></p>
+    </div>
+    <!-- end 暂无推荐票 -->
+    <!-- start 获取信息失败-->
+    <%}else if(data.status == 9){%>
+    <div class="limit-wrap" id="commonError">
+        <h3 class="error-tip">对不起，无此书籍信息</h3>
+    </div>
+    <!-- end 获取信息失败-->
+    <!-- start 未登录-->
+    <%}else if(data.status == 1000){%>
+    <div class="limit-wrap" id="commonError">
+        <h3 class="error-tip"> 您还未登录，<a href="javascript:" class="j_login">立即登录</a></h3>
+    </div>
+    <!-- end 未登录-->
+    <!-- start 通用错误 -->
+    <%}else if(data.status == -1){%>
+    <div class="limit-wrap" id="commonError">
+        <h3 class="error-tip"><%= msg%></h3>
+    </div>
+    <!-- end 通用错误 -->
+    <%}else{%>
+    <div class="limit-wrap" id="commonError">
+        <h3 class="error-tip"><%= data.statusMsg%></h3>
+    </div>
+    <%}%>
+</script>
+<script id="rewardPopup.html" type="text/ejs-template">
+    <%
+    var giftList = data.giftList;
+    if(data.status == 0){%>
+    <!-- start 无限制可以打赏 -->
+    <div class="no-limit-wrap">
+        <div class="vote-form-wrap">
+            <div class="gift-list j-giftList cf" id="j-giftPopupList">
+                <ul class="cf">
+                    <% for(var i=0; i < giftList.length; i++) { %>
+                    <li data-giftid="<%=giftList[i].giftId%>" data-price="<%=giftList[i].price%>" data-giftno="<%=i%>">
+                        <div class="gift">
+                            <img src="<%=giftList[i].imgUrl%>">
+                        </div>
+                        <h5><%=giftList[i].price%>红袖币</h5>
+                        <p><%=giftList[i].giftName%></p>
+                    </li>
+                    <% } %>
+                </ul>
+            </div>
+            <h4>账户余额<em id="balance"><%=data.balance%></em>红袖币</h4>
+        </div>
+    </div>
+    <!-- end 无限制可以打赏 -->
+
+    <!-- start 书籍审核等级不够-->
+    <%}else if(data.status == 2){%>
+    <div class="limit-wrap">
+        <h3 class="error-tip">书籍审核等级不够</h3>
+    </div>
+    <!-- end 书籍审核等级不够-->
+
+    <!-- start 获取信息失败-->
+    <%}else if(data.status == 9){%>
+    <div class="limit-wrap">
+        <h3 class="error-tip">对不起，无此书籍信息</h3>
+    </div>
+    <!-- end 获取信息失败-->
+
+    <!-- start 未登录-->
+    <%}else if(data.status == 1000){%>
+    <div class="limit-wrap">
+        <h3 class="error-tip"> 您还未登录，<a href="javascript:" class="j_login">立即登录</a></h3>
+    </div>
+    <!-- end 未登录-->
+
+    <%}else if(data.status == -1){%>
+    <div class="limit-wrap">
+        <h3 class="error-tip"><%= data.statusMsg%></h3>
+    </div>
+    <%}else{%>
+    <div class="limit-wrap">
+        <h3 class="error-tip"><%= data.statusMsg%></h3>
+    </div>
+    <%}%>
+</script>
+<script id="voteWrap.html" type="text/ejs-template">
+    <div class="vote-popup" id="votePopup" data-l1="15">
+        <%
+        var rec = 'hidden', month = 'hidden', reward = 'hidden';
+        var recAct = '', monthAct = '', rewardAct = '';
+        if(showMonth){
+        month = '';
+        monthAct = 'act';
+        }else if(showRec){
+        rec = '';
+        recAct = 'act';
+        }else{
+        reward = ''
+        rewardAct = 'act';
+        }
+        if(actSign && actSign != ''){
+        rec = 'hidden';
+        month = 'hidden';
+        reward = 'hidden';
+        recAct = '';
+        monthAct = '';
+        rewardAct = '';
+        }
+        switch(actSign){
+        case 'rec':
+        rec = '';
+        recAct = 'act';
+        break;
+        case 'rew':
+        reward = ''
+        rewardAct = 'act';
+        break;
+        case 'mon':
+        month = '';
+        monthAct = 'act';
+        break;
+        }
+        %>
+        <!-- start 弹窗切换tab-->
+        <div class="popup-tab" id="popupTab">
+            <!-- EJS注释，如果作品是非VIP，看不到投月票Tab -->
+            <%if(showMonth){%>
+            <a class="lang j_month <%= monthAct%>" href="javascript:" id="monthTab" data-content="#monthPopup">投月票<em></em></a>
+            <%}%>
+            <%if(showRec){%>
+            <a class="lang j_rec <%= recAct%>" href="javascript:" id="recTab" data-content="#recPopup">投推荐票<em></em></a>
+            <%}%>
+            <%if(showReward){%>
+            <a class="lang j_reward <%= rewardAct%>" href="javascript:" id="rewardTab" data-content="#rewardPopup">礼物</a>
+            <%}%>
+        </div>
+        <!-- end 弹窗切换tab-->
+        <!-- start 弹窗互动内容 -->
+        <div class="vote-popup-wrap" id="voteWrap">
+            <!-- start 投月票 -->
+            <!-- EJS注释，如果作品是非VIP，看不到投月票的弹窗 -->
+            <div class="popup-content month <%= month%>" id="monthPopup" data-l2="1">
+                <div class="loading">
+                    <span></span>
+                    <p>请稍后...</p>
+                </div>
+            </div>
+            <!-- end 投月票 -->
+            <!-- start 投推荐票 -->
+            <div class="popup-content rec <%= rec%>" id="recPopup" data-l2="2">
+                <div class="loading">
+                    <span></span>
+                    <p>请稍后...</p>
+                </div>
+            </div>
+            <!-- end 投推荐票 -->
+            <!-- EJS注释，如果作品是非签约作品，看不到投打赏的弹窗 -->
+            <!-- start 打赏 -->
+            <div class="popup-content reward <%= reward%>" id="rewardPopup" data-l2="3">
+                <div class="loading">
+                    <span></span>
+                    <p>请稍后...</p>
+                </div>
+            </div>
+            <!-- end 打赏 -->
+        </div>
+        <!-- end 弹窗互动内容 -->
+    </div>
+</script>
+<script id="sendGiftPopup.html" type="text/ejs-template">
+    <%
+    var data = data.data;
+    var roleList = data.roleList;
+    var giftList = data.giftList;
+    %>
+    <div class="send-gift" id="j-sendGiftPopup">
+        <div class="popup-title">
+            <h3 class="lang">我要送礼物</h3>
+        </div>
+        <%if(data.status == 0){%>
+        <!-- start 礼物数量 -->
+        <div class="popup-content gift-num-wrap">
+            <%
+            //弹窗展示时首次显示花费总量，公式是；单价*1 （鲜花是*9）;
+            var total = 0;
+            if(giftId != 100001){
+                total = giftPrice;
+            } else {
+                total = giftPrice * 9;
+            }
+            %>
+            <h3>账户余额 <span id="j-amount"><%=data.balance%></span> 红袖币 | 本次花费 <b class="pink" id="j-expend"><%=total%></b> 红袖币</h3>
+            <div class="vote-form-wrap">
+                <h4>礼物数量</h4>
+                <div class="vote-wrap cf">
+                    <a class="subtract" id="subGift" href="javascript:" data-eid="qd_G110"><span></span></a>
+                    <div class="gift-num-box fl">
+                        <div class="gift-img" id="j-giftImg" data-price="<%=giftPrice%>" data-giftid="<%=giftId%>" data-giftname="<%=giftList[giftNo].giftName%>">
+                            <img src="<%=giftList[giftNo].imgUrl%>">
+                        </div>
+                        <cite class="fl iconfont">&#xe61f;</cite>
+                        <div class="input-box">
+                            <input id="giftNum" maxlength="3" value="<%=(giftId == 100001) ? 9 : 1%>">
+                            <div class="present <%=(total < 10000) ? 'hidden' : '' %>" id="j-presentTip"><strong></strong>赠投<b id="j-giveMonth">1</b>月票</div>
+                        </div>
+                    </div>
+                    <a class="add" id="addGift" href="javascript:" data-eid="qd_G111"><span><em></em></span></a>
+                </div>
+            </div>
+            <div class="send-who" id="j-roleWrap">
+                <p><em>送给</em>
+                    <% for(var i=0; i < roleList.length; i++) { %>
+                    <input id="<%=roleList[i].id%>" name="who" type="radio" <%= (i == 0) ? 'checked':''%>><label for="<%=roleList[i].id%>"><%=roleList[i].name%></label>
+                    <% } %>
+                </p>
+            </div>
+        </div>
+        <%} else {%>
+        <div class="popup-content gift-num-wrap">
+            <div class="error-wrap">
+                <h3 class="error-tip"><%= data.statusMsg || '' %></h3>
+            </div>
+        </div>
+        <% } %>
+        <!-- end 礼物数量 -->
+        <div class="popup-btn">
+            <a class="red-btn" id="j-sendGiftBtn" href="javascript:">送礼物</a>
+        </div>
+    </div>
+
+
+</script>
+
+
+
+<!-- start LBF lib -->
+<script data-ignore="true" src="//yuxseocdn.yuewen.com/lbf/1.0.4.1/LBF.js?max_age=31536000"></script>
+
+    <script data-ignore="true" src="//yuxseocdn.yuewen.com/fock/fock.100223.js"></script>
+
+<script>
+    LBF.config({"paths":{"site":"//yuxseocdn.yuewen.com/pro/hongxiu_pc/_prelease/js","static":"//yuxseocdn.yuewen.com/pro/hongxiu_pc/_prelease","common":"//oaqidian.gtimg.com/common/1.0.1"},"vars":{"theme":"//oaqidian.gtimg.com/hongxiu/css"},"combo":false,"debug":false});
+    LBF.use(['lib.jQuery', 'static/js/read/index.9c5a3.js'], function ($, Index) {
+        // 页面逻辑入口
+        new Index({});
+        /*$(window).on('load.speedReport', function () {
+            // speedTimer[onload]
+            speedTimer.push(new Date().getTime());
+            var f1 = 7718, // china reading limited's ID
+                f2 = 219, // site ID
+                f3 = 39; // page ID
+            // chrome & IE9 Performance API
+            SpeedReport.reportPerformance({
+                flag1: f1,
+                flag2: f2,
+                flag3IE: f3,
+                rate:0.1,
+                flag3Chrome: f3,
+                url: '//isdspeed.qidian.com/cgi-bin/r.cgi'
+            });
+            // common speedTimer:['dom ready', 'onload']
+            var speedReport = SpeedReport.create({
+                flag1: f1,
+                flag2: f2,
+                flag3: f3,
+                rate:0.1,
+                start: speedZero,
+                url: '//isdspeed.qidian.com/cgi-bin/r.cgi'
+            });
+            // chrome & IE9 Performance API range 1~19, common speedTimer use 20+
+            for (var i = 0; i < speedTimer.length; i++) {
+                speedReport.add(speedTimer[i], i + 20)
+            }
+            // http://isdspeed.qq.com/cgi-bin/r.cgi?flag1=7718&flag2=224&flag3=1&1=38&2=38&…
+            //speedReport.send();
+        })*/
+    });
+    // speedTimer[dom ready], put it before </body>
+    //speedTimer.push(new Date().getTime());
+</script>
+
+<!-- end LBF lib -->
+<!-- 页面置灰 -->
+<!-- <script>
+  var time = +new Date()
+  if (time < 1672502400000) { // - 2023-1-1
+    document.getElementsByTagName('html')[0].style.filter = 'grayscale(100%)'
+    document.getElementsByTagName('html')[0].style['-webkit-filter'] = 'grayscale(100%)'
+  }
+</script> -->
+
+<!--【新增】百度统计配置 -->
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?3ba92f5fe7e3e5ecd3c37df261beed8a";
+        var s = document.getElementsByTagName("script")[0]; 
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+<!-- sentry错误上报 -->
+<script src="https://yuxseocdn.yuewen.com/sentry/sentry.7.12.1.bundle.min.js"
+        integrity="sha384-ds3MEkwHMg1Vl0XMXl86pZU3gIntwqCNJtYn0etV2sTjuKLdqrtEKFzCwgj3uzcL"
+        crossorigin="anonymous"
+></script>
+<script>
+    Sentry.init({
+      dsn: "https://7c1c0ab338284c86b04556d277819cdc@newsentry.qidian.com/50",
+      tracesSampleRate: 1.0,
+    });
+    Sentry.configureScope(function(scope) {
+      scope.setTag("site", "hongxiu");
+      scope.setTag("envType", "pro");
+    });
+</script>
+
+<!-- yep 上报 -->
+<script>
+    (function(i,s,o,g,r,a,m){i['QDAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://noah2-1252317822.file.myqcloud.com/npm/@yuewen/yep-report@latest/dist/yep.js','yep');
+
+    yep('set', {
+      appid: 10061,
+    })
+ </script>
+
+</body>
+</html>

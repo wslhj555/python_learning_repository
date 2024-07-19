@@ -1,0 +1,5 @@
+"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
+"passed","Sat Jun 29 09:56:26 CST 2024","Sat Jun 29 09:56:26 CST 2024","3","","test_allure_demo","","","","test_step1",""
+"passed","Sat Jun 29 09:56:26 CST 2024","Sat Jun 29 09:56:26 CST 2024","8","","test_allure_demo","TestEditPage","","","test_2",""
+"passed","Sat Jun 29 09:56:26 CST 2024","Sat Jun 29 09:56:26 CST 2024","11","","test_allure_demo","","","","test_step2",""
+"passed","Sat Jun 29 09:56:26 CST 2024","Sat Jun 29 09:56:26 CST 2024","2","","test_allure_demo","TestEditPage","","","test_1",""

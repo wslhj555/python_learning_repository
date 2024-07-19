@@ -1,0 +1,140 @@
+{
+  "uid" : "8f7e484c40ed986c",
+  "name" : "test_delete_user",
+  "fullName" : "test_allure_1.TestUserManagement#test_delete_user",
+  "historyId" : "38c6cff40d19d0086cf2a4b44ea0e7b9",
+  "time" : {
+    "start" : 1720253352013,
+    "stop" : 1720253352020,
+    "duration" : 7
+  },
+  "description" : "测试删除用户",
+  "descriptionHtml" : "<p>测试删除用户</p>\n",
+  "status" : "passed",
+  "flaky" : false,
+  "newFailed" : false,
+  "beforeStages" : [ ],
+  "testStage" : {
+    "description" : "测试删除用户",
+    "status" : "passed",
+    "steps" : [ {
+      "name" : "Step 1: Open user management page",
+      "time" : {
+        "start" : 1720253352013,
+        "stop" : 1720253352015,
+        "duration" : 2
+      },
+      "status" : "passed",
+      "steps" : [ ],
+      "attachments" : [ ],
+      "parameters" : [ ],
+      "stepsCount" : 0,
+      "hasContent" : false,
+      "attachmentsCount" : 0,
+      "shouldDisplayMessage" : false
+    }, {
+      "name" : "Step 2: Select user to delete",
+      "time" : {
+        "start" : 1720253352015,
+        "stop" : 1720253352015,
+        "duration" : 0
+      },
+      "status" : "passed",
+      "steps" : [ ],
+      "attachments" : [ ],
+      "parameters" : [ ],
+      "stepsCount" : 0,
+      "hasContent" : false,
+      "attachmentsCount" : 0,
+      "shouldDisplayMessage" : false
+    }, {
+      "name" : "Step 3: Confirm deletion",
+      "time" : {
+        "start" : 1720253352015,
+        "stop" : 1720253352019,
+        "duration" : 4
+      },
+      "status" : "passed",
+      "steps" : [ ],
+      "attachments" : [ ],
+      "parameters" : [ ],
+      "stepsCount" : 0,
+      "hasContent" : false,
+      "attachmentsCount" : 0,
+      "shouldDisplayMessage" : false
+    }, {
+      "name" : "Step 4: Verify user deleted successfully",
+      "time" : {
+        "start" : 1720253352019,
+        "stop" : 1720253352019,
+        "duration" : 0
+      },
+      "status" : "passed",
+      "steps" : [ ],
+      "attachments" : [ ],
+      "parameters" : [ ],
+      "stepsCount" : 0,
+      "hasContent" : false,
+      "attachmentsCount" : 0,
+      "shouldDisplayMessage" : false
+    } ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 4,
+    "hasContent" : true,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false
+  },
+  "afterStages" : [ ],
+  "labels" : [ {
+    "name" : "feature",
+    "value" : "User Management"
+  }, {
+    "name" : "story",
+    "value" : "Delete User"
+  }, {
+    "name" : "suite",
+    "value" : "test_allure_1"
+  }, {
+    "name" : "subSuite",
+    "value" : "TestUserManagement"
+  }, {
+    "name" : "host",
+    "value" : "PC-20201222KASO"
+  }, {
+    "name" : "thread",
+    "value" : "9612-MainThread"
+  }, {
+    "name" : "framework",
+    "value" : "pytest"
+  }, {
+    "name" : "language",
+    "value" : "cpython3"
+  }, {
+    "name" : "package",
+    "value" : "test_allure_1"
+  }, {
+    "name" : "resultFormat",
+    "value" : "allure2"
+  } ],
+  "parameters" : [ ],
+  "links" : [ ],
+  "hidden" : false,
+  "retry" : false,
+  "extra" : {
+    "severity" : "normal",
+    "retries" : [ {
+      "uid" : "4ddedeb399bbd869",
+      "status" : "passed",
+      "time" : {
+        "start" : 1720252923904,
+        "stop" : 1720252923929,
+        "duration" : 25
+      }
+    } ],
+    "categories" : [ ],
+    "tags" : [ ]
+  },
+  "source" : "8f7e484c40ed986c.json",
+  "parameterValues" : [ ]
+}
