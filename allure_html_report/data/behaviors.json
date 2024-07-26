@@ -1,0 +1,43 @@
+{
+  "uid" : "b1a8273437954620fa374b796ffaacdd",
+  "name" : "behaviors",
+  "children" : [ {
+    "name" : "User Management",
+    "children" : [ {
+      "name" : "Add User",
+      "children" : [ {
+        "name" : "test_add_user",
+        "uid" : "b481f3aef0940881",
+        "parentUid" : "c8afbc8e0d64f788200706b83fd422f1",
+        "status" : "passed",
+        "time" : {
+          "start" : 1720253351981,
+          "stop" : 1720253351985,
+          "duration" : 4
+        },
+        "flaky" : false,
+        "newFailed" : false,
+        "parameters" : [ ]
+      } ],
+      "uid" : "c8afbc8e0d64f788200706b83fd422f1"
+    }, {
+      "name" : "Delete User",
+      "children" : [ {
+        "name" : "test_delete_user",
+        "uid" : "8f7e484c40ed986c",
+        "parentUid" : "72c6c6c4d8d41841d1df50cf84702fcc",
+        "status" : "passed",
+        "time" : {
+          "start" : 1720253352013,
+          "stop" : 1720253352020,
+          "duration" : 7
+        },
+        "flaky" : false,
+        "newFailed" : false,
+        "parameters" : [ ]
+      } ],
+      "uid" : "72c6c6c4d8d41841d1df50cf84702fcc"
+    } ],
+    "uid" : "cf80ae54266b20121713418dc0893786"
+  } ]
+}

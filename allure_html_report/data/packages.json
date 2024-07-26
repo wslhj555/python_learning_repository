@@ -1,0 +1,35 @@
+{
+  "uid" : "83edc06c07f9ae9e47eb6dd1b683e4e2",
+  "name" : "packages",
+  "children" : [ {
+    "name" : "test_allure_1",
+    "children" : [ {
+      "name" : "test_add_user",
+      "uid" : "b481f3aef0940881",
+      "parentUid" : "46ccdaf45495a8b9341431c7ea7842d9",
+      "status" : "passed",
+      "time" : {
+        "start" : 1720253351981,
+        "stop" : 1720253351985,
+        "duration" : 4
+      },
+      "flaky" : false,
+      "newFailed" : false,
+      "parameters" : [ ]
+    }, {
+      "name" : "test_delete_user",
+      "uid" : "8f7e484c40ed986c",
+      "parentUid" : "46ccdaf45495a8b9341431c7ea7842d9",
+      "status" : "passed",
+      "time" : {
+        "start" : 1720253352013,
+        "stop" : 1720253352020,
+        "duration" : 7
+      },
+      "flaky" : false,
+      "newFailed" : false,
+      "parameters" : [ ]
+    } ],
+    "uid" : "46ccdaf45495a8b9341431c7ea7842d9"
+  } ]
+}

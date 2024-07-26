@@ -1,0 +1,39 @@
+{
+  "uid" : "ab17fc5a4eb3bca4b216b548c7f9fcbc",
+  "name" : "timeline",
+  "children" : [ {
+    "name" : "PC-20201222KASO",
+    "children" : [ {
+      "name" : "9612-MainThread",
+      "children" : [ {
+        "name" : "test_add_user",
+        "uid" : "b481f3aef0940881",
+        "parentUid" : "c29abda9390507a08772138d21e2cc98",
+        "status" : "passed",
+        "time" : {
+          "start" : 1720253351981,
+          "stop" : 1720253351985,
+          "duration" : 4
+        },
+        "flaky" : false,
+        "newFailed" : false,
+        "parameters" : [ ]
+      }, {
+        "name" : "test_delete_user",
+        "uid" : "8f7e484c40ed986c",
+        "parentUid" : "c29abda9390507a08772138d21e2cc98",
+        "status" : "passed",
+        "time" : {
+          "start" : 1720253352013,
+          "stop" : 1720253352020,
+          "duration" : 7
+        },
+        "flaky" : false,
+        "newFailed" : false,
+        "parameters" : [ ]
+      } ],
+      "uid" : "c29abda9390507a08772138d21e2cc98"
+    } ],
+    "uid" : "7c743697b8d110ad75a4923a21694d12"
+  } ]
+}

@@ -1,0 +1,21 @@
+[ {
+  "uid" : "b481f3aef0940881",
+  "name" : "test_add_user",
+  "time" : {
+    "start" : 1720253351981,
+    "stop" : 1720253351985,
+    "duration" : 4
+  },
+  "status" : "passed",
+  "severity" : "normal"
+}, {
+  "uid" : "8f7e484c40ed986c",
+  "name" : "test_delete_user",
+  "time" : {
+    "start" : 1720253352013,
+    "stop" : 1720253352020,
+    "duration" : 7
+  },
+  "status" : "passed",
+  "severity" : "normal"
+} ]
