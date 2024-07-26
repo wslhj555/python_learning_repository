@@ -1,0 +1,140 @@
+{
+  "uid" : "b481f3aef0940881",
+  "name" : "test_add_user",
+  "fullName" : "test_allure_1.TestUserManagement#test_add_user",
+  "historyId" : "ae35c9f5be761755577dbe4dd22687c0",
+  "time" : {
+    "start" : 1720253351981,
+    "stop" : 1720253351985,
+    "duration" : 4
+  },
+  "description" : "测试添加用户",
+  "descriptionHtml" : "<p>测试添加用户</p>\n",
+  "status" : "passed",
+  "flaky" : false,
+  "newFailed" : false,
+  "beforeStages" : [ ],
+  "testStage" : {
+    "description" : "测试添加用户",
+    "status" : "passed",
+    "steps" : [ {
+      "name" : "Step 1: Open user management page",
+      "time" : {
+        "start" : 1720253351982,
+        "stop" : 1720253351983,
+        "duration" : 1
+      },
+      "status" : "passed",
+      "steps" : [ ],
+      "attachments" : [ ],
+      "parameters" : [ ],
+      "stepsCount" : 0,
+      "hasContent" : false,
+      "attachmentsCount" : 0,
+      "shouldDisplayMessage" : false
+    }, {
+      "name" : "Step 2: Fill in user details",
+      "time" : {
+        "start" : 1720253351983,
+        "stop" : 1720253351984,
+        "duration" : 1
+      },
+      "status" : "passed",
+      "steps" : [ ],
+      "attachments" : [ ],
+      "parameters" : [ ],
+      "stepsCount" : 0,
+      "hasContent" : false,
+      "attachmentsCount" : 0,
+      "shouldDisplayMessage" : false
+    }, {
+      "name" : "Step 3: Submit user details",
+      "time" : {
+        "start" : 1720253351984,
+        "stop" : 1720253351984,
+        "duration" : 0
+      },
+      "status" : "passed",
+      "steps" : [ ],
+      "attachments" : [ ],
+      "parameters" : [ ],
+      "stepsCount" : 0,
+      "hasContent" : false,
+      "attachmentsCount" : 0,
+      "shouldDisplayMessage" : false
+    }, {
+      "name" : "Step 4: Verify user added successfully",
+      "time" : {
+        "start" : 1720253351984,
+        "stop" : 1720253351984,
+        "duration" : 0
+      },
+      "status" : "passed",
+      "steps" : [ ],
+      "attachments" : [ ],
+      "parameters" : [ ],
+      "stepsCount" : 0,
+      "hasContent" : false,
+      "attachmentsCount" : 0,
+      "shouldDisplayMessage" : false
+    } ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "stepsCount" : 4,
+    "hasContent" : true,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false
+  },
+  "afterStages" : [ ],
+  "labels" : [ {
+    "name" : "story",
+    "value" : "Add User"
+  }, {
+    "name" : "feature",
+    "value" : "User Management"
+  }, {
+    "name" : "suite",
+    "value" : "test_allure_1"
+  }, {
+    "name" : "subSuite",
+    "value" : "TestUserManagement"
+  }, {
+    "name" : "host",
+    "value" : "PC-20201222KASO"
+  }, {
+    "name" : "thread",
+    "value" : "9612-MainThread"
+  }, {
+    "name" : "framework",
+    "value" : "pytest"
+  }, {
+    "name" : "language",
+    "value" : "cpython3"
+  }, {
+    "name" : "package",
+    "value" : "test_allure_1"
+  }, {
+    "name" : "resultFormat",
+    "value" : "allure2"
+  } ],
+  "parameters" : [ ],
+  "links" : [ ],
+  "hidden" : false,
+  "retry" : false,
+  "extra" : {
+    "severity" : "normal",
+    "retries" : [ {
+      "uid" : "8988b9397bb72c34",
+      "status" : "passed",
+      "time" : {
+        "start" : 1720252923875,
+        "stop" : 1720252923885,
+        "duration" : 10
+      }
+    } ],
+    "categories" : [ ],
+    "tags" : [ ]
+  },
+  "source" : "b481f3aef0940881.json",
+  "parameterValues" : [ ]
+}
