@@ -41,3 +41,7 @@ time.sleep(3)
 
 # 关闭浏览器
 driver.quit()
+
+
+current_working_directory = os.getcwd()
+print(f"当前工作目录是: {current_working_directory}")
